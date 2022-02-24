@@ -1,24 +1,70 @@
-RTT
-===
+## Integrating the Segger RTT source as a submodule
+The project can be integrated using CMake an a simple ```include_subdirectory``` statement which will compile a static library that can be linked against in your application.
 
-SEGGER RTT Sources
+## Example C API
+To view examples of implementing the C API, check out the included ```Examples``` folder.
 
-https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer  
-https://wiki.segger.com/RTT
+## Example Cortex-Debug / launch.json config
+Add the following config to print ASCII messages over RTT
+```json
+"rttConfig":{
+			"enabled":true,
+			"address":"auto",
+			"decoders":[
+				{
+					"port":0,
+					"type":"terminal",
+				},
+			]
+		},
+```
 
-## Included files
+To print data in binary format (viewing raw hex and binary values) use the following config
+```json
+"rttConfig":{
+			"enabled":true,
+			"address":"auto",
+			"decoders":[
+				{
+					"port":0,
+					"type":"binary",
+					"encoding": "unsigned",
+					"scale":1
+				},
+			]
+		},
+```
 
-  * `RTT/`
-    * `SEGGER_RTT.c`               - Main module for RTT.
-    * `SEGGER_RTT.h`               - Main header for RTT.
-    * `SEGGER_RTT_ASM_ARMv7M.S`    - Assembly-optimized implementation of RTT functions for ARMv7M processors.
-    * `SEGGER_RTT_Printf.c`        - Simple implementation of printf (`SEGGER_RTT_Printf()`) to write formatted strings via RTT.
-  * `Syscalls/`
-    * `SEGGER_RTT_Syscalls_*.c`    - Low-level syscalls to retarget `printf()` to RTT with different toolchains.
-  * `Config/`
-    * `SEGGER_RTT_Conf.h`          - RTT configuration file.
-  * `Examples/`
-    * `Main_RTT_InputEchoApp.c`    - Example application which echoes input on Channel 0.
-    * `Main_RTT_MenuApp.c`         - Example application to demonstrate RTT bi-directional functionality.
-    * `Main_RTT_PrintfTest.c`      - Example application to test RTT's simple printf implementation.
-    * `Main_RTT_SpeedTestApp.c`    - Example application to measure RTT performance. (Requires embOS)
+To plot a data point sent over RTT use the following config
+```json
+		"rttConfig":{
+			"enabled":true,
+			"address":"auto",
+			"decoders":[
+				{
+					"port":0,
+					"type":"graph",
+					"encoding": "unsigned",
+					"graphId":"1",
+					"scale":1
+				},
+			]
+		},
+		"graphConfig": [
+			{
+				"label": "Graph 1",
+				"timespan": 30,
+				"type": "realtime",
+				"annotate": false,
+				"maximum": 10,
+				"minimum": 0,
+				"plots": [
+					{
+						"graphId": "1",
+						"label": "data 1",
+						"color": "#53753c"
+					},
+				]
+			},
+		]
+```
