@@ -8,63 +8,63 @@ To view examples of implementing the C API, check out the included ```Examples``
 Add the following config to print ASCII messages over RTT
 ```json
 "rttConfig":{
-			"enabled":true,
-			"address":"auto",
-			"decoders":[
-				{
-					"port":0,
-					"type":"terminal",
-				},
-			]
+	"enabled":true,
+	"address":"auto",
+	"decoders":[
+		{
+			"port":0,
+			"type":"terminal",
 		},
+	]
+},
 ```
 
 To print data in binary format (viewing raw hex and binary values) use the following config
 ```json
 "rttConfig":{
-			"enabled":true,
-			"address":"auto",
-			"decoders":[
-				{
-					"port":0,
-					"type":"binary",
-					"encoding": "unsigned",
-					"scale":1
-				},
-			]
+	"enabled":true,
+	"address":"auto",
+	"decoders":[
+		{
+			"port":0,
+			"type":"binary",
+			"encoding": "unsigned",
+			"scale":1
 		},
+	]
+},
 ```
 
 To plot a data point sent over RTT use the following config
 ```json
-		"rttConfig":{
-			"enabled":true,
-			"address":"auto",
-			"decoders":[
+	"rttConfig":{
+		"enabled":true,
+		"address":"auto",
+		"decoders":[
+			{
+				"port":0,
+				"type":"graph",
+				"encoding": "unsigned",
+				"graphId":"1",
+				"scale":1
+			},
+		]
+	},
+	"graphConfig": [
+		{
+			"label": "Graph 1",
+			"timespan": 30,
+			"type": "realtime",
+			"annotate": false,
+			"maximum": 10,
+			"minimum": 0,
+			"plots": [
 				{
-					"port":0,
-					"type":"graph",
-					"encoding": "unsigned",
-					"graphId":"1",
-					"scale":1
+					"graphId": "1",
+					"label": "data 1",
+					"color": "#53753c"
 				},
 			]
 		},
-		"graphConfig": [
-			{
-				"label": "Graph 1",
-				"timespan": 30,
-				"type": "realtime",
-				"annotate": false,
-				"maximum": 10,
-				"minimum": 0,
-				"plots": [
-					{
-						"graphId": "1",
-						"label": "data 1",
-						"color": "#53753c"
-					},
-				]
-			},
-		]
+	]
 ```
